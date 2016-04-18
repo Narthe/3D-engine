@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "GameObject.h"
 
 GameObject::GameObject()
@@ -19,34 +21,39 @@ void GameObject::init()
 
 void GameObject::CreateVBO()
 {
-	GLenum ErrorCheckValue = glGetError(); // Clear any previous opengl error
+	std::cout << "Create VBO " << std::endl;
 
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(0);
+	GLenum ErrorCheckValue = glGetError();
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0); // 0 means no buffer should be tied to the GL_ARRAY_BUFFER target
+	glGenVertexArrays(1, &m_VaoId); // Generates Vertex Array Object in the GPU's memory 
+	glBindVertexArray(m_VaoId);
 
-	glDeleteBuffers(1, &m_ColorBufferId);
-	glDeleteBuffers(1, &m_VboId);
+	glGenBuffers(1, &m_VboId);	  // Generates a buffer in the GPU's memory
+	glBindBuffer(GL_ARRAY_BUFFER, m_VboId);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(m_Vertices), m_Vertices, GL_STATIC_DRAW); // Copy the vertex data over to the GPU's memory
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0); // Provides OpenGL with all of the necessary metadata to use the block of raw data that we've uploaded to the GPU's memory using glBufferData.
+	glEnableVertexAttribArray(0); // Enable attributes
 
-	glBindVertexArray(0);
-	glDeleteVertexArrays(1, &m_VaoId);
+								  // Exact same way to set the color data
+	glGenBuffers(1, &m_ColorBufferId);
+	glBindBuffer(GL_ARRAY_BUFFER, m_ColorBufferId);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(m_Colors), m_Colors, GL_STATIC_DRAW);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(1);
 
+	// Checking for errors
 	ErrorCheckValue = glGetError();
 	if (ErrorCheckValue != GL_NO_ERROR)
 	{
-		fprintf(
-			stderr,
-			"ERROR: Could not destroy the VBO: %s \n",
-			gluErrorString(ErrorCheckValue)
-		);
-
+		std::cerr << "ERROR: Could not create a VBO: " << gluErrorString(ErrorCheckValue)  << std::endl;
 		exit(-1);
 	}
 }
 
 void GameObject::CreateShaders()
 {
+	std::cout << "Create Shaders " << std::endl;
+
 	GLenum ErrorCheckValue = glGetError();
 
 	m_VertexShaderId = glCreateShader(GL_VERTEX_SHADER); // Generate a new shader object
@@ -67,18 +74,15 @@ void GameObject::CreateShaders()
 	ErrorCheckValue = glGetError();
 	if (ErrorCheckValue != GL_NO_ERROR)
 	{
-		fprintf(
-			stderr,
-			"ERROR: Could not create the shaders: %s \n",
-			gluErrorString(ErrorCheckValue)
-		);
-
+		std::cerr << "ERROR: Could not create the shaders: " << gluErrorString(ErrorCheckValue) << std::endl;
 		exit(-1);
 	}
 }
 
 void GameObject::DestroyVBO()
 {
+	std::cout << "Destroy VBO " << std::endl;
+
 	GLenum ErrorCheckValue = glGetError(); // Clear any previous opengl error
 
 	glDisableVertexAttribArray(1);
@@ -95,18 +99,15 @@ void GameObject::DestroyVBO()
 	ErrorCheckValue = glGetError();
 	if (ErrorCheckValue != GL_NO_ERROR)
 	{
-		fprintf(
-			stderr,
-			"ERROR: Could not destroy the VBO: %s \n",
-			gluErrorString(ErrorCheckValue)
-		);
-
+		std::cerr << "ERROR: Could not destroy the VBO: " << gluErrorString(ErrorCheckValue) << std::endl;
 		exit(-1);
 	}
 }
 
 void GameObject::DestroyShaders()
 {
+	std::cout << "Destroy Shaders " << std::endl;
+
 	GLenum ErrorCheckValue = glGetError();
 
 	glUseProgram(0); // Stop using the shader program
@@ -122,12 +123,7 @@ void GameObject::DestroyShaders()
 	ErrorCheckValue = glGetError();
 	if (ErrorCheckValue != GL_NO_ERROR)
 	{
-		fprintf(
-			stderr,
-			"ERROR: Could not destroy the shaders: %s \n",
-			gluErrorString(ErrorCheckValue)
-		);
-
+		std::cerr << "ERROR: Could not destroy the shaders: " << gluErrorString(ErrorCheckValue) << std::endl;
 		exit(-1);
 	}
 }

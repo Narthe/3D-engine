@@ -65,12 +65,4 @@ private:
 	GLuint			m_ProgramId;
 };
 
-GameObject::GameObject()
-{
-}
-
-GameObject::~GameObject()
-{
-}
-
 #endif

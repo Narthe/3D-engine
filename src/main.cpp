@@ -1,12 +1,13 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <sstream>
+#include <iostream>
+#include <string>
+
 #include "glew.h"
 #include "freeglut.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#define WINDOW_TITLE_PREFIX "Chapter 2"
-
-
+#include "GameObject.h"
 
 int
 CurrentWidth = 800,
@@ -15,42 +16,9 @@ WindowHandle = 0;
 
 unsigned FrameCount = 0;
 
-GLuint
-VertexShaderId,
-FragmentShaderId,
-ProgramId,
-VaoId,
-VboId,
-ColorBufferId;
+GameObject * g;
 
-const GLchar* VertexShader =
-{
-	"#version 400\n"\
-
-	"layout(location=0) in vec4 in_Position;\n"\
-	"layout(location=1) in vec4 in_Color;\n"\
-	"out vec4 ex_Color;\n"\
-
-	"void main(void)\n"\
-	"{\n"\
-	"  gl_Position = in_Position;\n"\
-	"  ex_Color = in_Color;\n"\
-	"}\n"
-};
-
-const GLchar* FragmentShader =
-{
-	"#version 400\n"\
-
-
-	"in vec4 ex_Color;\n"\
-	"out vec4 out_Color;\n"\
-
-	"void main(void)\n"\
-	"{\n"\
-	"  out_Color = ex_Color;\n"\
-	"}\n"
-};
+#define WINDOW_TITLE "3D Engine"
 
 void Initialize(int, char*[]);
 void InitWindow(int, char*[]);
@@ -59,10 +27,6 @@ void RenderFunction(void);
 void TimerFunction(int);
 void IdleFunction(void);
 void Cleanup(void);
-void CreateVBO(void);
-void DestroyVBO(void);
-void CreateShaders(void);
-void DestroyShaders(void);
 
 int main(int argc, char* argv[])
 {
@@ -83,22 +47,13 @@ void Initialize(int argc, char* argv[])
 	GlewInitResult = glewInit();
 
 	if (GLEW_OK != GlewInitResult) {
-		fprintf(
-			stderr,
-			"ERROR: %s\n",
-			glewGetErrorString(GlewInitResult)
-			);
+		std::cerr << "ERROR: " << glewGetErrorString(GlewInitResult) << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
-	fprintf(
-		stdout,
-		"INFO: OpenGL Version: %s\n",
-		glGetString(GL_VERSION)
-		);
+	std::cout << "INFO: OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
-	CreateShaders();
-	CreateVBO();
+	g = new GameObject();
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
@@ -120,13 +75,10 @@ void InitWindow(int argc, char* argv[])
 
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 
-	WindowHandle = glutCreateWindow(WINDOW_TITLE_PREFIX);
+	WindowHandle = glutCreateWindow(WINDOW_TITLE);
 
 	if (WindowHandle < 1) {
-		fprintf(
-			stderr,
-			"ERROR: Could not create a new rendering window.\n"
-			);
+		std::cerr << "ERROR: Could not create a new rendering window." << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
@@ -163,20 +115,16 @@ void IdleFunction(void)
 void TimerFunction(int Value)
 {
 	if (0 != Value) {
-		char* TempString = (char*)
-			malloc(512 + strlen(WINDOW_TITLE_PREFIX));
+		std::stringstream  TempString;
+		TempString << std::string(WINDOW_TITLE)
+					<< " : "
+					<< FrameCount * 4
+					<< " Frames Per Second @ "
+					<< CurrentWidth
+					<< " x "
+					<< CurrentHeight;
 
-		sprintf(
-			TempString,
-			"%s: %d Frames Per Second @ %d x %d",
-			WINDOW_TITLE_PREFIX,
-			FrameCount * 4,
-			CurrentWidth,
-			CurrentHeight
-			);
-
-		glutSetWindowTitle(TempString);
-		free(TempString);
+		glutSetWindowTitle(TempString.str().c_str());
 	}
 
 	FrameCount = 0;
@@ -185,139 +133,5 @@ void TimerFunction(int Value)
 
 void Cleanup(void)
 {
-	DestroyShaders();
-	DestroyVBO();
-}
-
-void CreateVBO(void)
-{
-	GLfloat Vertices[] = {
-		-0.8f, -0.8f, 0.0f, 1.0f,
-		0.0f,  0.8f, 0.0f, 1.0f,
-		0.8f, -0.8f, 0.0f, 1.0f
-	};
-
-	GLfloat Colors[] = {
-		1.0f, 0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f, 1.0f
-	};
-
-	GLenum ErrorCheckValue = glGetError();
-
-	glGenVertexArrays(1, &VaoId); // Generates Vertex Array Object in the GPU's memory 
-	glBindVertexArray(VaoId);
-
-	glGenBuffers(1, &VboId);	  // Generates a buffer in the GPU's memory
-	glBindBuffer(GL_ARRAY_BUFFER, VboId);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW); // Copy the vertex data over to the GPU's memory
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0); // Provides OpenGL with all of the necessary metadata to use the block of raw data that we've uploaded to the GPU's memory using glBufferData.
-	glEnableVertexAttribArray(0); // Enable attributes
-
-	// Exact same way to set the color data
-	glGenBuffers(1, &ColorBufferId);
-	glBindBuffer(GL_ARRAY_BUFFER, ColorBufferId);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Colors), Colors, GL_STATIC_DRAW);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(1);
-
-	// Checking for errors
-	ErrorCheckValue = glGetError();
-	if (ErrorCheckValue != GL_NO_ERROR)
-	{
-		fprintf(
-			stderr,
-			"ERROR: Could not create a VBO: %s \n",
-			gluErrorString(ErrorCheckValue)
-			);
-
-		exit(-1);
-	}
-}
-
-void DestroyVBO(void)
-{
-	GLenum ErrorCheckValue = glGetError(); // Clear any previous opengl error
-
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0); // 0 means no buffer should be tied to the GL_ARRAY_BUFFER target
-
-	glDeleteBuffers(1, &ColorBufferId);
-	glDeleteBuffers(1, &VboId);
-
-	glBindVertexArray(0);
-	glDeleteVertexArrays(1, &VaoId);
-
-	ErrorCheckValue = glGetError();
-	if (ErrorCheckValue != GL_NO_ERROR)
-	{
-		fprintf(
-			stderr,
-			"ERROR: Could not destroy the VBO: %s \n",
-			gluErrorString(ErrorCheckValue)
-			);
-
-		exit(-1);
-	}
-}
-
-void CreateShaders(void)
-{
-	GLenum ErrorCheckValue = glGetError();
-
-	VertexShaderId = glCreateShader(GL_VERTEX_SHADER); // Generate a new shader object
-	glShaderSource(VertexShaderId, 1, &VertexShader, NULL); // Copies the shader source code and associates it with the shader object 
-	glCompileShader(VertexShaderId); // Compile the shader
-
-	FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(FragmentShaderId, 1, &FragmentShader, NULL);
-	glCompileShader(FragmentShaderId); 
-
-	// To combine both vertex and fragment shaders we need a shader program object
-	ProgramId = glCreateProgram(); // Generates the program
-	glAttachShader(ProgramId, VertexShaderId);
-	glAttachShader(ProgramId, FragmentShaderId);
-	glLinkProgram(ProgramId);
-	glUseProgram(ProgramId);
-
-	ErrorCheckValue = glGetError();
-	if (ErrorCheckValue != GL_NO_ERROR)
-	{
-		fprintf(
-			stderr,
-			"ERROR: Could not create the shaders: %s \n",
-			gluErrorString(ErrorCheckValue)
-			);
-
-		exit(-1);
-	}
-}
-
-void DestroyShaders(void)
-{
-	GLenum ErrorCheckValue = glGetError();
-
-	glUseProgram(0); // Stop using the shader program
-
-	glDetachShader(ProgramId, VertexShaderId);
-	glDetachShader(ProgramId, FragmentShaderId);
-
-	glDeleteShader(FragmentShaderId);
-	glDeleteShader(VertexShaderId);
-
-	glDeleteProgram(ProgramId);
-
-	ErrorCheckValue = glGetError();
-	if (ErrorCheckValue != GL_NO_ERROR)
-	{
-		fprintf(
-			stderr,
-			"ERROR: Could not destroy the shaders: %s \n",
-			gluErrorString(ErrorCheckValue)
-			);
-
-		exit(-1);
-	}
+	delete g;
 }
