@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifdef WIN32 // Windows 32 & 64
+#ifdef _WIN32 // Windows 32 & 64
 	#include "glew.h"
 	#include "freeglut.h"
 #elif __linux__
