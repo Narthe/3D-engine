@@ -4,8 +4,15 @@
 #include <iostream>
 #include <string>
 
+#ifdef WIN32 // Windows 32 & 64
 #include "glew.h"
 #include "freeglut.h"
+#elif __linux__
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+#else
+#error Unsupported Platform
+#endif
 
 #include "GameObject.h"
 
