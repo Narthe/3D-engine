@@ -1,12 +1,19 @@
-#include "glew.h"
-#include "freeglut.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+#ifdef __WIN32__ // Windows 32 & 64
+	#include "glew.h"
+	#include "freeglut.h"
+#elif __linux__
+	#include <GL/glew.h>
+	#include <GL/freeglut.h>
+#else
+	#error Unsupported Platform
+#endif
+
 #define WINDOW_TITLE_PREFIX "Chapter 2"
-
-
 
 int
 CurrentWidth = 800,
@@ -205,7 +212,7 @@ void CreateVBO(void)
 
 	GLenum ErrorCheckValue = glGetError();
 
-	glGenVertexArrays(1, &VaoId); // Generates Vertex Array Object in the GPU's memory 
+	glGenVertexArrays(1, &VaoId); // Generates Vertex Array Object in the GPU's memory
 	glBindVertexArray(VaoId);
 
 	glGenBuffers(1, &VboId);	  // Generates a buffer in the GPU's memory
@@ -268,12 +275,12 @@ void CreateShaders(void)
 	GLenum ErrorCheckValue = glGetError();
 
 	VertexShaderId = glCreateShader(GL_VERTEX_SHADER); // Generate a new shader object
-	glShaderSource(VertexShaderId, 1, &VertexShader, NULL); // Copies the shader source code and associates it with the shader object 
+	glShaderSource(VertexShaderId, 1, &VertexShader, NULL); // Copies the shader source code and associates it with the shader object
 	glCompileShader(VertexShaderId); // Compile the shader
 
 	FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(FragmentShaderId, 1, &FragmentShader, NULL);
-	glCompileShader(FragmentShaderId); 
+	glCompileShader(FragmentShaderId);
 
 	// To combine both vertex and fragment shaders we need a shader program object
 	ProgramId = glCreateProgram(); // Generates the program
