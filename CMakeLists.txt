@@ -5,13 +5,17 @@ project(3D-engine)
 file(
   GLOB_RECURSE
   sources
-  src/*.c
+  src/*.cpp
 )
 
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(GLUT REQUIRED)
-include_directories( ${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} )
+#include_directories( ${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} )
+
+
+include_directories(include/glew include/freeglut)
+include_directories(include/3D-engine)
 
 add_executable(
   3D-engine
