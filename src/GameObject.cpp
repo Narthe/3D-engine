@@ -2,7 +2,13 @@
 
 #include "GameObject.h"
 
-GameObject::GameObject()
+#include <Importer.hpp>      // C++ importer interface
+#include <scene.h>           // Output data structure
+#include <postprocess.h>     // Post processing fla
+
+
+GameObject::GameObject():
+	m_SceneFile("C:/Users/dorado2/DEV/3D-engine/res/Models/stanford-dragon.blend")
 {
 	init();
 }
@@ -127,3 +133,33 @@ void GameObject::DestroyShaders()
 		exit(-1);
 	}
 }
+
+//bool GameObject::DoTheImportThing()
+//{
+//	// Create an instance of the Importer class
+//	Assimp::Importer importer;
+//	// And have it read the given file with some example postprocessing
+//	// Usually - if speed is not the most important aspect for you - you'll 
+//	// propably to request more postprocessing than we do in this example.
+//	const aiScene* scene = importer.ReadFile(m_SceneFile,
+//		aiProcess_CalcTangentSpace |
+//		aiProcess_Triangulate |
+//		aiProcess_JoinIdenticalVertices |
+//		aiProcess_SortByPType);
+//
+//	// If the import failed, report it
+//	if (!scene)
+//	{
+//		std::cerr << (importer.GetErrorString()) << std::endl;
+//		return false;
+//	}
+//	// Now we can access the file's contents. 
+//	DoTheSceneProcessing(scene);
+//	// We're done. Everything will be cleaned up by the importer destructor
+//	return true;
+//}
+//
+//void GameObject::DoTheSceneProcessing(const aiScene* _scene)
+//{
+//	std::cout << "Do scene processing" << std::endl;
+//}

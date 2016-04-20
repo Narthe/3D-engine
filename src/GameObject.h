@@ -1,12 +1,12 @@
-#ifndef GAMEOBJECT_H_
-#define GAMEOBJECT_H_
+#pragma once
 
 #include "glew.h"
 #include "freeglut.h"
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+#include <string>
+#include <map>
 
 class GameObject
 {
@@ -18,6 +18,13 @@ public:
 	void DestroyVBO();
 	void CreateShaders();
 	void DestroyShaders();
+	
+	std::map<std::string, GLuint> m_textureIdMap;
+	int				m_numFaces;
+	GLuint			m_VaoId;
+	GLuint			m_texIndex;
+	GLuint			m_uniformBlockIndex;
+	std::string		m_SceneFile;
 
 private:
 	GLfloat m_Vertices[16] = {
@@ -57,12 +64,9 @@ private:
 		"}\n"
 	};
 
-	GLuint			m_VaoId;
 	GLuint			m_VboId;
 	GLuint			m_ColorBufferId;
 	GLuint			m_VertexShaderId;
 	GLuint			m_FragmentShaderId;
 	GLuint			m_ProgramId;
 };
-
-#endif

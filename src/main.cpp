@@ -8,6 +8,7 @@
 #include "freeglut.h"
 
 #include "GameObject.h"
+#include "ModelLoader.h"
 
 int
 CurrentWidth = 800,
@@ -53,7 +54,11 @@ void Initialize(int argc, char* argv[])
 
 	std::cout << "INFO: OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
-	g = new GameObject();
+	ModelLoader modelLoader = ModelLoader();
+	GameObject gameObject = GameObject();
+	if (!modelLoader.Import3DFromFile(gameObject))
+		return;
+	modelLoader.LoadGLTextures(gameObject);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
