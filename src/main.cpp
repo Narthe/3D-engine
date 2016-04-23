@@ -4,11 +4,11 @@
 #include <iostream>
 #include <string>
 
-#include "glew.h"
-#include "freeglut.h"
+#include "glew\glew.h"
+#include "freeglut\freeglut.h"
 
-#include "GameObject.h"
-#include "ModelLoader.h"
+#include "3D-engine\Mesh.h"
+//#include "res_path.h"
 
 int
 CurrentWidth = 800,
@@ -17,7 +17,7 @@ WindowHandle = 0;
 
 unsigned FrameCount = 0;
 
-GameObject * g;
+Mesh *mesh;
 
 #define WINDOW_TITLE "3D Engine"
 
@@ -54,11 +54,9 @@ void Initialize(int argc, char* argv[])
 
 	std::cout << "INFO: OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
-	ModelLoader modelLoader = ModelLoader();
-	GameObject gameObject = GameObject();
-	if (!modelLoader.Import3DFromFile(gameObject))
-		return;
-	modelLoader.LoadGLTextures(gameObject);
+	//const std::string resPath = getResourcePath("Models");
+	std::string resPath = "C:\\Users\\narthe\\DEV\\3D-engine\\res\\";
+	mesh = new Mesh(resPath + "Models\\stanford-dragon.blend");
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
@@ -107,7 +105,8 @@ void RenderFunction(void)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	mesh->render();
+	/*glDrawArrays(GL_TRIANGLES, 0, 3);*/
 
 	glutSwapBuffers();
 }
@@ -138,5 +137,5 @@ void TimerFunction(int Value)
 
 void Cleanup(void)
 {
-	delete g;
+	delete mesh;
 }

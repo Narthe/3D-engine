@@ -1,14 +1,14 @@
 #include <iostream>
 
-#include "GameObject.h"
+#include "3D-engine\GameObject.h"
 
-#include <Importer.hpp>      // C++ importer interface
-#include <scene.h>           // Output data structure
-#include <postprocess.h>     // Post processing fla
+#include "assimp\Importer.hpp"		// C++ importer interface
+#include "assimp\scene.h"           // Output data structure
+#include "assimp\postprocess.h"     // Post processing fla
 
 
 GameObject::GameObject():
-	m_SceneFile("C:/Users/dorado2/DEV/3D-engine/res/Models/stanford-dragon.blend")
+	m_SceneFile()
 {
 	init();
 }

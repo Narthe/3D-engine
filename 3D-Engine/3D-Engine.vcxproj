@@ -76,6 +76,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -93,12 +94,12 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\glew;$(SolutionDir)include\freeglut;$(SolutionDir)include\devil;$(SolutionDir)include\assimp;$(SolutionDir)include\3D-engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glew32.lib;freeglut.lib;assimp.lib;devil.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;freeglut.lib;assimp-vc130-mtd.lib;devil.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\glew;$(SolutionDir)lib\freeglut;$(SolutionDir)lib\devil;$(SolutionDir)lib\assimp;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -110,6 +111,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\3D-engine\;$(SolutionDir)include\assimp\;$(SolutionDir)include\freeglut\;$(SolutionDir)include\devil\;$(SolutionDir)include\glew\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -159,11 +161,12 @@
     <ClCompile Include="..\src\GameObject.cpp" />
     <ClCompile Include="..\src\GameObjectManager.cpp" />
     <ClCompile Include="..\src\main.cpp" />
-    <ClCompile Include="..\src\ModelLoader.cpp" />
+    <ClCompile Include="..\src\Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\3D-engine\GameObject.h" />
-    <ClInclude Include="..\include\3D-engine\ModelLoader.h" />
+    <ClInclude Include="..\include\3D-engine\GameObjectManager.h" />
+    <ClInclude Include="..\include\3D-engine\Mesh.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
-#include "GameObjectManager.h"
-#include "GameObject.h"
+#include "3D-engine\GameObject.h"
+#include "3D-engine\GameObjectManager.h"
 
 GameObjectManager GameObjectManager::m_instance = GameObjectManager();
 std::vector<GameObject*> GameObjectManager::m_objects = std::vector<GameObject*>();
