@@ -99,7 +99,8 @@ struct Light {
 };
 
 // constants
-const glm::vec2 SCREEN_SIZE(1366, 768);
+//const glm::vec2 SCREEN_SIZE(1366, 768);
+const glm::vec2 SCREEN_SIZE(1920, 1080);
 
 // globals
 GLFWwindow* gWindow = NULL;
@@ -114,7 +115,8 @@ Light gLight;
 // returns a new tdogl::Program created from the given vertex and fragment shader filenames
 static engine::Program* LoadShaders(const char* vertFilename, const char* fragFilename) {
 	std::vector<engine::Shader> shaders;
-	shaders.push_back(engine::Shader::shaderFromFile(ResourcePath(vertFilename), GL_VERTEX_SHADER));
+	std::string temp = ResourcePath(vertFilename);
+	shaders.push_back(engine::Shader::shaderFromFile(temp, GL_VERTEX_SHADER));
 	shaders.push_back(engine::Shader::shaderFromFile(ResourcePath(fragFilename), GL_FRAGMENT_SHADER));
 	return new engine::Program(shaders);
 }
@@ -306,7 +308,7 @@ static void Render() {
 	}
 
 	// Render Imgui windows
-	ImGui::Render();
+	//ImGui::Render();
 
 	// swap the display buffers (displays what was just drawn)
 	glfwSwapBuffers(gWindow);
@@ -356,13 +358,13 @@ static void Update(float secondsElapsed) {
 
 
 												 //rotate camera based on mouse movement
-												 /*const float mouseSensitivity = 0.1f;
-												 double mouseX, mouseY;
-												 glfwGetCursorPos(gWindow, &mouseX, &mouseY);
-												 gCamera.offsetOrientation(mouseSensitivity * (float)mouseY, mouseSensitivity * (float)mouseX);
-												 glfwSetCursorPos(gWindow, 0, 0);*/ //reset the mouse, so it doesn't go out of the window
+	const float mouseSensitivity = 0.1f;
+	double mouseX, mouseY;
+	glfwGetCursorPos(gWindow, &mouseX, &mouseY);
+	gCamera.offsetOrientation(mouseSensitivity * (float)mouseY, mouseSensitivity * (float)mouseX);
+	glfwSetCursorPos(gWindow, 0, 0); //reset the mouse, so it doesn't go out of the window
 
-												 //increase or decrease field of view based on mouse wheel
+									 //increase or decrease field of view based on mouse wheel
 	const float zoomSensitivity = -0.2f;
 	float fieldOfView = gCamera.fieldOfView() + zoomSensitivity * (float)gScrollY;
 	if (fieldOfView < 5.0f) fieldOfView = 5.0f;
@@ -491,35 +493,35 @@ void AppMain() {
 		glfwPollEvents();
 
 		//Setup ImGui windows
-		ImGui_ImplGlfwGL3_NewFrame();
+		//ImGui_ImplGlfwGL3_NewFrame();
 
 		// 1. Show a simple window
 		// Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets appears in a window automatically called "Debug"
-		{
-			static float f = 0.0f;
-			ImGui::Text("Hello, world!");
-			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-			ImGui::ColorEdit3("clear color", (float*)&clear_color);
-			if (ImGui::Button("Test Window")) show_test_window ^= 1;
-			if (ImGui::Button("Another Window")) show_another_window ^= 1;
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		}
+		//{
+		//	static float f = 0.0f;
+		//	ImGui::Text("Hello, world!");
+		//	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+		//	ImGui::ColorEdit3("clear color", (float*)&clear_color);
+		//	if (ImGui::Button("Test Window")) show_test_window ^= 1;
+		//	if (ImGui::Button("Another Window")) show_another_window ^= 1;
+		//	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		//}
 
-		// 2. Show another simple window, this time using an explicit Begin/End pair
-		if (show_another_window)
-		{
-			ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiSetCond_FirstUseEver);
-			ImGui::Begin("Another Window", &show_another_window);
-			ImGui::Text("Hello");
-			ImGui::End();
-		}
+		//// 2. Show another simple window, this time using an explicit Begin/End pair
+		//if (show_another_window)
+		//{
+		//	ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiSetCond_FirstUseEver);
+		//	ImGui::Begin("Another Window", &show_another_window);
+		//	ImGui::Text("Hello");
+		//	ImGui::End();
+		//}
 
-		// 3. Show the ImGui test window. Most of the sample code is in ImGui::ShowTestWindow()
-		if (show_test_window)
-		{
-			ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
-			ImGui::ShowTestWindow(&show_test_window);
-		}
+		//// 3. Show the ImGui test window. Most of the sample code is in ImGui::ShowTestWindow()
+		//if (show_test_window)
+		//{
+		//	ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
+		//	ImGui::ShowTestWindow(&show_test_window);
+		//}
 
 		// update the scene based on the time elapsed since last update
 		double thisTime = glfwGetTime();
@@ -540,7 +542,7 @@ void AppMain() {
 	}
 
 	// clean up and exit
-	ImGui_ImplGlfwGL3_Shutdown();
+	//ImGui_ImplGlfwGL3_Shutdown();
 	glfwTerminate();
 }
 

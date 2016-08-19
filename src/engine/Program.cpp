@@ -1,5 +1,5 @@
 /*
- tdogl::Program
+ engine::Program
  
  Copyright 2012 Thomas Dalling - http://tomdalling.com/
  

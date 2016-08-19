@@ -1,5 +1,5 @@
 /*
- tdogl::Texture
+ engine::Texture
  
  Copyright 2012 Thomas Dalling - http://tomdalling.com/
  
@@ -31,7 +31,7 @@ namespace engine {
         /**
          Creates a texture from a bitmap.
          
-         The texture will be loaded upside down because tdogl::Bitmap pixel data
+         The texture will be loaded upside down because engine::Bitmap pixel data
          is ordered from the top row down, but OpenGL expects the data to
          be from the bottom row up.
          

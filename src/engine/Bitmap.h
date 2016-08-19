@@ -1,5 +1,5 @@
 /*
- tdogl::Bitmap
+ engine::Bitmap
  
  Copyright 2012 Thomas Dalling - http://tomdalling.com/
  
@@ -26,7 +26,7 @@ namespace engine {
      A bitmap image (i.e. a grid of pixels).
      
      This is not really related to OpenGL, but can be used to make OpenGL textures using
-     tdogl::Texture.
+     engine::Texture.
      */
     class Bitmap {
     public:
@@ -55,7 +55,7 @@ namespace engine {
         ~Bitmap();
         
         /**
-         Tries to load the given file into a tdogl::Bitmap.
+         Tries to load the given file into a engine::Bitmap.
          */
         static Bitmap bitmapFromFile(std::string filePath);
                 

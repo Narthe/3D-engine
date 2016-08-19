@@ -1,5 +1,5 @@
 /*
- tdogl::Shader
+ engine::Shader
  
  Copyright 2012 Thomas Dalling - http://tomdalling.com/
  

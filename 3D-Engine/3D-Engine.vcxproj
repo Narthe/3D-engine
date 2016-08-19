@@ -183,6 +183,17 @@
     <ClInclude Include="..\src\imgui\stb_textedit.h" />
     <ClInclude Include="..\src\imgui\stb_truetype.h" />
     <ClInclude Include="..\src\platform.hpp" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\res\fragment-shader.txt" />
+    <Text Include="..\res\vertex-shader.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\res\wooden-crate.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

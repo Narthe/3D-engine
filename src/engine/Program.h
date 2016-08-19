@@ -1,5 +1,5 @@
 /*
- tdogl::Program
+ engine::Program
  
  Copyright 2012 Thomas Dalling - http://tomdalling.com/
  
@@ -30,13 +30,13 @@ namespace engine {
     class Program { 
     public:
         /**
-         Creates a program by linking a list of tdogl::Shader objects
+         Creates a program by linking a list of engine::Shader objects
          
          @param shaders  The shaders to link together to make the program
          
          @throws std::exception if an error occurs.
          
-         @see tdogl::Shader
+         @see engine::Shader
          */
         Program(const std::vector<Shader>& shaders);
         ~Program();
@@ -69,7 +69,7 @@ namespace engine {
 
          These are convenience methods for the glVertexAttrib* and glUniform* functions.
          */
-#define _TDOGL_PROGRAM_ATTRIB_N_UNIFORM_SETTERS(OGL_TYPE) \
+#define _engine_PROGRAM_ATTRIB_N_UNIFORM_SETTERS(OGL_TYPE) \
         void setAttrib(const GLchar* attribName, OGL_TYPE v0); \
         void setAttrib(const GLchar* attribName, OGL_TYPE v0, OGL_TYPE v1); \
         void setAttrib(const GLchar* attribName, OGL_TYPE v0, OGL_TYPE v1, OGL_TYPE v2); \
@@ -90,10 +90,10 @@ namespace engine {
         void setUniform3v(const GLchar* uniformName, const OGL_TYPE* v, GLsizei count=1); \
         void setUniform4v(const GLchar* uniformName, const OGL_TYPE* v, GLsizei count=1); \
 
-        _TDOGL_PROGRAM_ATTRIB_N_UNIFORM_SETTERS(GLfloat)
-        _TDOGL_PROGRAM_ATTRIB_N_UNIFORM_SETTERS(GLdouble)
-        _TDOGL_PROGRAM_ATTRIB_N_UNIFORM_SETTERS(GLint)
-        _TDOGL_PROGRAM_ATTRIB_N_UNIFORM_SETTERS(GLuint)
+        _engine_PROGRAM_ATTRIB_N_UNIFORM_SETTERS(GLfloat)
+        _engine_PROGRAM_ATTRIB_N_UNIFORM_SETTERS(GLdouble)
+        _engine_PROGRAM_ATTRIB_N_UNIFORM_SETTERS(GLint)
+        _engine_PROGRAM_ATTRIB_N_UNIFORM_SETTERS(GLuint)
 
         void setUniformMatrix2(const GLchar* uniformName, const GLfloat* v, GLsizei count=1, GLboolean transpose=GL_FALSE);
         void setUniformMatrix3(const GLchar* uniformName, const GLfloat* v, GLsizei count=1, GLboolean transpose=GL_FALSE);

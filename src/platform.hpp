@@ -9,3 +9,4 @@
 #include <string>
 
 std::string ResourcePath(std::string fileName);
+std::wstring s2ws(const std::string& s);

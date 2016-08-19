@@ -1,5 +1,5 @@
 /*
- tdogl::Shader
+ engine::Shader
  
  Copyright 2012 Thomas Dalling - http://tomdalling.com/
  
@@ -58,7 +58,7 @@ namespace engine {
          */
         GLuint object() const;
         
-        // tdogl::Shader objects can be copied and assigned because they are reference counted
+        // engine::Shader objects can be copied and assigned because they are reference counted
         // like a shared pointer
         Shader(const Shader& other);
         Shader& operator =(const Shader& other);
