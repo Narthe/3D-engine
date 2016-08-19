@@ -94,13 +94,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\glew;$(SolutionDir)include\freeglut;$(SolutionDir)include\3D-engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\glm\;$(SolutionDir)include\glew\;$(SolutionDir)include\glfw\;$(SolutionDir)include\stb_image\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glew32.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\lib\glew;..\lib\freeglut;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\lib\glew;..\lib\glfw;..\lib\opengl;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -157,11 +157,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\GameObject.cpp" />
+    <ClCompile Include="..\src\engine\Bitmap.cpp" />
+    <ClCompile Include="..\src\engine\Camera.cpp" />
+    <ClCompile Include="..\src\engine\Program.cpp" />
+    <ClCompile Include="..\src\engine\Shader.cpp" />
+    <ClCompile Include="..\src\engine\Texture.cpp" />
+    <ClCompile Include="..\src\imgui\imgui.cpp" />
+    <ClCompile Include="..\src\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\src\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\src\imgui\imgui_impl_glfw_gl3.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\platform_windows.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\3D-engine\GameObject.h" />
+    <ClInclude Include="..\src\engine\Bitmap.h" />
+    <ClInclude Include="..\src\engine\Camera.h" />
+    <ClInclude Include="..\src\engine\Program.h" />
+    <ClInclude Include="..\src\engine\Shader.h" />
+    <ClInclude Include="..\src\engine\Texture.h" />
+    <ClInclude Include="..\src\imgui\imconfig.h" />
+    <ClInclude Include="..\src\imgui\imgui.h" />
+    <ClInclude Include="..\src\imgui\imgui_impl_glfw_gl3.h" />
+    <ClInclude Include="..\src\imgui\imgui_internal.h" />
+    <ClInclude Include="..\src\imgui\stb_rect_pack.h" />
+    <ClInclude Include="..\src\imgui\stb_textedit.h" />
+    <ClInclude Include="..\src\imgui\stb_truetype.h" />
+    <ClInclude Include="..\src\platform.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
